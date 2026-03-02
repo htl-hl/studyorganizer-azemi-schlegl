@@ -2,7 +2,9 @@
 -- CREATE DATABASE HausaufgabenPlaner;
 -- USE HausaufgabenPlaner;
 
--- 1. Tabelle: Fächer
+-- 1. Tabelle: Fächer 
+create database schleger;
+use database schleger; 
 CREATE TABLE Faecher (
     name VARCHAR(50) PRIMARY KEY -- Name ist Unique
 );
