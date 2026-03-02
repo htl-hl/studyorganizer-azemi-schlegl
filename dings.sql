@@ -4,7 +4,7 @@
 
 -- 1. Tabelle: Fächer 
 create database schleger;
-use database schleger; 
+use schleger; 
 CREATE TABLE Faecher (
     name VARCHAR(50) PRIMARY KEY -- Name ist Unique
 );
