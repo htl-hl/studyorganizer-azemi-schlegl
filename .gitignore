@@ -1,11 +1,5 @@
 # phpstorm project files
 .idea
-.ddev
-/tests
-/vendor
-/runtime
-/web/assets
-.bowerrc
 
 # visual studio code project files
 .vscode
