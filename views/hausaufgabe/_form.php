@@ -23,9 +23,9 @@ use app\models\Faecher;
             ['prompt' => 'Fach auswählen']
     ) ?>
 
-    <?= $form->field($model, 'Erledigt')->textInput() ?>
+    <?= $form->field($model, 'Erledigt')->checkbox() ?>
 
-    <?= $form->field($model, 'Faelligkeitsdatum')->textInput() ?>
+    <?= $form->field($model, 'Faelligkeitsdatum')->input('date') ?>
 
     <div class="form-group">
         <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
