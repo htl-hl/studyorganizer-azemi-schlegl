@@ -2,6 +2,8 @@
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
+use yii\helpers\ArrayHelper;
+use app\models\Faecher;
 
 /** @var yii\web\View $this */
 /** @var app\models\Hausaufgabe $model */
@@ -16,7 +18,10 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'Beschr')->textarea(['rows' => 6]) ?>
 
-    <?= $form->field($model, 'Fachname')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'Fachname')->dropDownList(
+            ArrayHelper::map(Faecher::find()->all(), 'name', 'name'),
+            ['prompt' => 'Fach auswählen']
+    ) ?>
 
     <?= $form->field($model, 'Erledigt')->textInput() ?>
 
