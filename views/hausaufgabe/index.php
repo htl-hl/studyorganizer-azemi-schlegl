@@ -31,7 +31,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
             'ID',
             'Titel',
-            'Beschr:ntext',
+                'Beschr',
             'Fachname',
             'Erledigt',
             //'Faelligkeitsdatum',
