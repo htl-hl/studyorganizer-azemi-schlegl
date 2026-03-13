@@ -73,14 +73,30 @@ class HausaufgabeController extends Controller
     {
         $model = new Hausaufgabe();
 
-        if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
-            return $this->redirect(['index']);
+        if ($this->request->isPost) {
+            if ($model->load($this->request->post()) && $model->save()) {
+                return $this->redirect(['index']);
+            }
         }
 
         return $this->render('create', [
             'model' => $model,
         ]);
     }
+
+    public function actionToggle($ID)
+    {
+        $model = Hausaufgabe::findOne($ID);
+
+        if ($model) {
+            $model->Erledigt = !$model->Erledigt;
+            $model->save(false);
+        }
+
+        return $this->redirect(['index']);
+    }
+
+
     /**
      * Updates an existing Hausaufgabe model.
      * If update is successful, the browser will be redirected to the 'view' page.

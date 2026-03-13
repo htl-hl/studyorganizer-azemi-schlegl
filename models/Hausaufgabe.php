@@ -35,7 +35,10 @@ class Hausaufgabe extends \yii\db\ActiveRecord
     {
         return [
             [['Titel'], 'required'],
-            [['Fachname'], 'filter', 'filter' => 'strtoupper'],
+            [['Beschr'], 'string'],
+            [['Fachname'], 'string', 'max' => 50],
+            [['Erledigt'], 'integer'],
+            [['Faelligkeitsdatum'], 'safe'],
         ];
     }
 
