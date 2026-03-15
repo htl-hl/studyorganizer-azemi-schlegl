@@ -1,0 +1,93 @@
+<?php
+
+namespace app\models;
+use yii\base\Model;
+use yii\data\ActiveDataProvider;
+use app\models\Hausaufgabe;
+use Yii;
+
+
+/**
+ * HausaufgabeSearch represents the model behind the search form of `app\models\Hausaufgabe`.
+ */
+class HausaufgabeSearch extends Hausaufgabe
+{
+
+    /**
+     * {@inheritdoc}
+     */
+    public function rules()
+    {
+        return [
+            [['ID', 'Erledigt'], 'integer'],
+            [['Titel', 'Beschr', 'Fachname', 'Faelligkeitsdatum'], 'safe'],
+        ];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function scenarios()
+    {
+        // bypass scenarios() implementation in the parent class
+        return Model::scenarios();
+    }
+
+    /**
+     * Creates data provider instance with search query applied
+     *
+     * @param array $params
+     * @param string|null $formName Form name to be used into `->load()` method.
+     *
+     * @return ActiveDataProvider
+     */
+    public function search($params, $formName = null)
+    {
+        $query = Hausaufgabe::find();
+        $query = Hausaufgabe::find();
+
+// Gäste dürfen keine Hausaufgaben sehen
+        if (Yii::$app->user->isGuest) {
+            $query->where('0=1'); // gibt keine Ergebnisse zurück
+        } elseif (Yii::$app->user->identity->role !== 'admin') {
+            // normale User sehen nur ihre eigenen Hausaufgaben
+            $query->andWhere(['user_id' => Yii::$app->user->id]);
+        }
+
+        if (!Yii::$app->user->isGuest && Yii::$app->user->identity->role !== 'admin') {
+            $query->andWhere(['user_id' => Yii::$app->user->id]);
+
+        if (Yii::$app->user->identity->role !== 'admin') {
+            $query->andWhere(['user_id' => Yii::$app->user->id]);
+        }
+
+
+        }
+        // add conditions that should always apply here
+
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+        ]);
+
+        $this->load($params, $formName);
+
+        if (!$this->validate()) {
+            // uncomment the following line if you do not want to return any records when validation fails
+            // $query->where('0=1');
+            return $dataProvider;
+        }
+
+        // grid filtering conditions
+        $query->andFilterWhere([
+            'ID' => $this->ID,
+            'Erledigt' => $this->Erledigt,
+            'Faelligkeitsdatum' => $this->Faelligkeitsdatum,
+        ]);
+
+        $query->andFilterWhere(['like', 'Titel', $this->Titel])
+            ->andFilterWhere(['like', 'Beschr', $this->Beschr])
+            ->andFilterWhere(['like', 'Fachname', $this->Fachname]);
+
+        return $dataProvider;
+    }
+}
