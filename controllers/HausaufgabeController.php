@@ -7,7 +7,7 @@ use app\models\HausaufgabeSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
-
+use Yii;
 /**
  * HausaufgabeController implements the CRUD actions for Hausaufgabe model.
  */
@@ -71,7 +71,15 @@ class HausaufgabeController extends Controller
      */
     public function actionCreate()
     {
+        // Gäste dürfen nicht erstellen
+        if (Yii::$app->user->isGuest) {
+            Yii::$app->session->setFlash('warning', 'Du musst eingeloggt sein, um eine Hausaufgabe zu erstellen.');
+            return $this->redirect(['index']); // zurück zur Übersicht
+        }
+
         $model = new Hausaufgabe();
+
+        $model->user_id = Yii::$app->user->id;
 
         if ($this->request->isPost) {
             if ($model->load($this->request->post()) && $model->save()) {

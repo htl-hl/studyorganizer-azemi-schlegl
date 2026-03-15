@@ -1,16 +1,18 @@
 <?php
 
 namespace app\models;
-
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use app\models\Hausaufgabe;
+use Yii;
+
 
 /**
  * HausaufgabeSearch represents the model behind the search form of `app\models\Hausaufgabe`.
  */
 class HausaufgabeSearch extends Hausaufgabe
 {
+
     /**
      * {@inheritdoc}
      */
@@ -42,7 +44,25 @@ class HausaufgabeSearch extends Hausaufgabe
     public function search($params, $formName = null)
     {
         $query = Hausaufgabe::find();
+        $query = Hausaufgabe::find();
 
+// Gäste dürfen keine Hausaufgaben sehen
+        if (Yii::$app->user->isGuest) {
+            $query->where('0=1'); // gibt keine Ergebnisse zurück
+        } elseif (Yii::$app->user->identity->role !== 'admin') {
+            // normale User sehen nur ihre eigenen Hausaufgaben
+            $query->andWhere(['user_id' => Yii::$app->user->id]);
+        }
+
+        if (!Yii::$app->user->isGuest && Yii::$app->user->identity->role !== 'admin') {
+            $query->andWhere(['user_id' => Yii::$app->user->id]);
+
+        if (Yii::$app->user->identity->role !== 'admin') {
+            $query->andWhere(['user_id' => Yii::$app->user->id]);
+        }
+
+
+        }
         // add conditions that should always apply here
 
         $dataProvider = new ActiveDataProvider([
