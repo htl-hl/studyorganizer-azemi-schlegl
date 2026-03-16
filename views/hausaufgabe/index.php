@@ -24,8 +24,8 @@ $this->params['breadcrumbs'][] = $this->title;
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <?= GridView::widget([
-            'dataProvider' => $dataProvider,
-            'filterModel' => $searchModel,
+        'dataProvider' => $dataProvider,
+        'filterModel' => $searchModel,
 
             'rowOptions' => function ($model) {
                 if (!$model->Erledigt && $model->Faelligkeitsdatum < date('Y-m-d')) {
@@ -33,32 +33,78 @@ $this->params['breadcrumbs'][] = $this->title;
                 }
             },
 
+
+
             'columns' => [
-                    ['class' => 'yii\grid\SerialColumn'],
-
-
+            ['class' => 'yii\grid\SerialColumn'],
                     [
                             'label' => 'Erstellt von',
                             'value' => function ($model) {
                                 return $model->user ? $model->user->Uname : 'Unknown';
                             }
                     ],
+            'ID',
+            'Titel',
+                'Beschr',
+                [
+                        'attribute' => 'Fachname',
+                        'format' => 'raw',
+                        'value' => function ($model) {
 
-                    'ID',
-                    'Titel',
-                    'Beschr',
+                            $farben = [
+                                    'INSY' => '#3498db',
+                                    'ITSI' => '#9b59b6',
+                                    'BS' => '#e67e22',
+                                    'SYT' => '#2ecc71',
+                                    'SYTU' => '#1abc9c',
+                                    'Deutsch' => '#e74c3c',
+                                    'Englisch' => '#f1c40f'
+                            ];
 
+                            $color = $farben[$model->Fachname] ?? '#888';
 
-                    'Fachname',
-                    'Erledigt',
-
+                            return "<span style='color:white;background:$color;padding:4px 8px;border-radius:6px;'>$model->Fachname</span>";
+                        }
+                ],
                     [
-                            'class' => ActionColumn::className(),
-                            'urlCreator' => function ($action, $model, $key, $index, $column) {
-                                return Url::toRoute([$action, 'ID' => $model->ID]);
+                            'attribute' => 'Erledigt',
+                            'format' => 'raw',
+                            'value' => function ($model) {
+
+                                if ($model->Erledigt) {
+                                    return Html::a(
+                                            '✔ Erledigt',
+                                            ['hausaufgabe/toggle', 'ID' => $model->ID],
+                                            ['style' => 'color:green;font-weight:bold']
+                                    );
+                                } else {
+                                    return Html::a(
+                                            'Offen',
+                                            ['hausaufgabe/toggle', 'ID' => $model->ID],
+                                            ['style' => 'color:red']
+                                    );
+                                }
+
                             }
                     ],
+                    [
+                            'attribute' => 'Faelligkeitsdatum',
+                            'format' => 'raw',
+                            'value' => function ($model) {
+                                if (!$model->Erledigt && $model->Faelligkeitsdatum < date('Y-m-d')) {
+                                    return "<span style='color:red;font-weight:bold;'>$model->Faelligkeitsdatum</span>";
+                                }
+                                return $model->Faelligkeitsdatum;
+                            }
+                    ],
+            [
+                'class' => ActionColumn::className(),
+                'urlCreator' => function ($action, Hausaufgabe $model, $key, $index, $column) {
+                    return Url::toRoute([$action, 'ID' => $model->ID]);
+                 }
             ],
+        ],
     ]); ?>
+
 
 </div>
