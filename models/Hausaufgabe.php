@@ -18,7 +18,7 @@ use Yii;
  */
 class Hausaufgabe extends \yii\db\ActiveRecord
 {
-
+    public $Lname;
 
     /**
      * {@inheritdoc}
@@ -71,6 +71,21 @@ class Hausaufgabe extends \yii\db\ActiveRecord
         return $this->hasOne(User::class, ['ID' => 'user_id']);
     }
 
+    public function getLehrer()
+    {
+        return $this->hasOne(User::class, ['LID' => 'LehrerID']); // 'LehrerID' in Hausaufgabe Tabelle
+    }public static function fachListe()
+{
+    return [
+        'INSY' => 'INSY',
+        'ITSI' => 'ITSI',
+        'BS' => 'BS',
+        'SYT' => 'SYT',
+        'SYTU' => 'SYTU',
+        'Deutsch' => 'Deutsch',
+        'Englisch' => 'Englisch',
+    ];
+}
 }
 
 

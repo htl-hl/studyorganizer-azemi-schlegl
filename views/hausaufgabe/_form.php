@@ -1,5 +1,4 @@
 <?php
-
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use yii\helpers\ArrayHelper;
@@ -21,6 +20,16 @@ use app\models\Faecher;
     <?= $form->field($model, 'Fachname')->dropDownList(
             ArrayHelper::map(Faecher::find()->all(), 'name', 'name'),
             ['prompt' => 'Fach auswählen']
+    ) ?>
+
+    <?php
+    // Lehrer direkt aus der Tabelle holen, nur Lname
+    $lehrerListe = Yii::$app->db->createCommand('SELECT Lname FROM Lehrer')->queryColumn();
+    ?>
+
+    <?= $form->field($model, 'Lname')->dropDownList(
+            array_combine($lehrerListe, $lehrerListe),
+            ['prompt' => 'Lehrer auswählen']
     ) ?>
 
     <?= $form->field($model, 'Erledigt')->checkbox() ?>

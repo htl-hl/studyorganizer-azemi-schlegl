@@ -4,48 +4,34 @@ namespace app\controllers;
 
 use Yii;
 use yii\web\Controller;
-use yii\web\ForbiddenHttpException;
+use yii\data\ActiveDataProvider;
+use app\models\User;
 
-class AdminController extends Controller
+class UserController extends Controller
 {
-    public function beforeAction($action)
-    {
-        if (Yii::$app->user->isGuest) {
-            return $this->redirect(['site/login']);
-        }
-
-        if (Yii::$app->user->identity->role !== 'admin') {
-            throw new ForbiddenHttpException('Du bist kein Admin.');
-        }
-
-        return parent::beforeAction($action);
-    }
-
     public function actionIndex()
     {
-        // nur Admins dürfen
         if (Yii::$app->user->isGuest || Yii::$app->user->identity->role !== 'admin') {
-            throw new \yii\web\ForbiddenHttpException('Du hast keinen Zugriff auf diese Seite.');
+            throw new \yii\web\ForbiddenHttpException('Du hast keinen Zugriff.');
         }
 
         $dataProvider = new \yii\data\ActiveDataProvider([
             'query' => \app\models\User::find(),
-            'pagination' => [
-                'pageSize' => 20,
-            ],
+            'pagination' => ['pageSize' => 20],
         ]);
 
         return $this->render('index', [
             'dataProvider' => $dataProvider,
         ]);
     }
+
     public function actionDelete($ID)
     {
         if (Yii::$app->user->isGuest || Yii::$app->user->identity->role !== 'admin') {
             throw new \yii\web\ForbiddenHttpException('Kein Zugriff.');
         }
 
-        $model = \app\models\User::findOne($ID);
+        $model = User::findOne($ID);
         if ($model) {
             $model->delete();
         }
