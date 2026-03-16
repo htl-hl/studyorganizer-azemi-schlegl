@@ -127,3 +127,36 @@ a.desc::after { border-top: 5px solid var(--primary); }
         text-align: center;
     }
 }
+
+body {
+    background-color: rgba(86, 138, 138, 0.62);
+    color: white;
+}
+
+.grid-view th {
+    background-color: #536360;
+    color: #ffffff;
+    border: black;
+    border-radius: 10px;
+}
+
+.grid-view td {
+    background-color: #536360;
+    color: #ffffff;
+    border: black;
+    border-radius: 10px;
+}
+
+.grid-view {
+    background-color: darkslategrey;
+    color: #ffffff;
+    border: black;
+    -webkit-box-shadow:6px 13px 13px 13px rgba(62,66,66,0.35);
+    -moz-box-shadow: 6px 13px 13px 13px rgba(62,66,66,0.35);
+    box-shadow: 6px 13px 13px 13px rgba(62,66,66,0.35);
+}
+
+a {
+    color: rgba(45, 255, 196, 0.92);
+
+}
