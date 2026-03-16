@@ -66,6 +66,10 @@ class Hausaufgabe extends \yii\db\ActiveRecord
     {
         return $this->hasOne(Faecher::class, ['name' => 'Fachname']);
     }
+    public function getUser()
+    {
+        return $this->hasOne(User::class, ['ID' => 'user_id']);
+    }
 
 }
 
